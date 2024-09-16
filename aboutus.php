@@ -87,25 +87,24 @@
         transform: translateX(0);
     }
     100% {
-        transform: translateX(-5400px);
+        transform: translateX(-5600px);
     }
 }
 
         .team-section .member {
         flex: 0 0 auto;
-        background: white;
+        background: whitesmoke;
         padding: 20px;
         margin: 20px;
         text-align: center;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         border-radius: 10px;
         width: 220px;
-        }
-
-
-        .team-section .member {
         display: block;
         }
+
+
+        
 
         .team-section img {
         border-radius: 50%;
@@ -163,64 +162,71 @@
         </p>
     </div>
 
-    <h2>Meet the Team</h2>
+    <h2>Meet the Team that made ExaMPS Possible.</h2>
     <div class="team-section-wrapper">
         <div class="team-section">
             <div class="member">
                 <img src="photos/members/carletteid.png" alt="Team Member 1">
                 <h3>Carlette Ann Dwayne<br>
                 R. Santos</h3>
+                <p>Project Leader</p>
                 <p>Lead Developer</p>
             </div>
             <div class="member">
                 <img src="photos/member2.jpg" alt="Team Member 2">
                 <h3>Cian Saverdo</h3>
-                <p>UI/UX Designer</p>
+                <p>Project Co-Leader</p>
+                <p>Research Editor</p>
             </div>
             <div class="member">
                 <img src="photos/members/patid.jpg" alt="Team Member 3">
                 <h3>John Patrick Refraccion</h3>
-                <p>Project Manager</p>
+                <p>Project Secretary</p>
             </div>
             <div class="member">
                 <img src="photos/members/gingerid.png" alt="Team Member 4">
                 <h3>Ginger A. Aguilar</h3>
-                <p>Project Manager</p>
+                <p>Member</p>
             </div>
             <div class="member">
                 <img src="photos/members/lovelyid.png" alt="Team Member 5">
                 <h3>Lovely Mercado</h3>
-                <p>Project Manager</p>
+                <p>Member</p>
             </div>
             <div class="member">
                 <img src="photos/member6.jpg" alt="Team Member 6">
                 <h3>Clement Dela Cruz</h3>
-                <p>Project Manager</p>
+                <p>Member</p>
             </div>
             <div class="member">
-                <img src="photos/member7.jpg" alt="Team Member 7">
+                <img src="photos/members/jpid.jfif" alt="Team Member 7">
                 <h3>John Paulo Dela Cruz</h3>
-                <p>Project Manager</p>
+                <p>Member</p>
             </div>
             <div class="member">
                 <img src="photos/members/webbid.jpg" alt="Team Member 8">
                 <h3>Webb Saimon Fadul</h3>
-                <p>Project Manager</p>
+                <p>Member</p>
             </div>
             <div class="member">
                 <img src="photos/members/macid.jpg" alt="Team Member 9">
                 <h3>Mark Andrew Fernandez</h3>
-                <p>Project Manager</p>
+                <p>Member</p>
             </div>
             <div class="member">
                 <img src="photos/member10.jpg" alt="Team Member 10">
                 <h3>Carl Lawrence Revilla</h3>
-                <p>Project Manager</p>
+                <p>Member</p>
             </div>
             <div class="member">
-                <img src="photos/member11.jpg" alt="Team Member 11">
+                <img src="photos/members/eironid.jfif" alt="Team Member 12">
+                <h3>Eiron Josh D. Santos</h3>
+                <p>Member</p>
+            </div>
+            <div class="member">
+                <img src="photos/member12.jpg" alt="Team Member 13">
                 <h3>Jhon Ellis Tibay</h3>
-                <p>Project Manager</p>
+                <p>Member</p>
             </div>
             <div class="member">
                 <img src="photos/members/carletteid.png" alt="Team Member 1">
@@ -236,47 +242,52 @@
             <div class="member">
                 <img src="photos/members/patid.jpg" alt="Team Member 3">
                 <h3>John Patrick Refraccion</h3>
-                <p>Project Manager</p>
+                <p>Group Secretary</p>
             </div>
             <div class="member">
                 <img src="photos/members/gingerid.png" alt="Team Member 4">
                 <h3>Ginger A. Aguilar</h3>
-                <p>Project Manager</p>
+                <p>Member</p>
             </div>
             <div class="member">
                 <img src="photos/members/lovelyid.png" alt="Team Member 5">
                 <h3>Lovely Mercado</h3>
-                <p>Project Manager</p>
+                <p>Member</p>
             </div>
             <div class="member">
                 <img src="photos/member6.jpg" alt="Team Member 6">
                 <h3>Clement Dela Cruz</h3>
-                <p>Project Manager</p>
+                <p>Member</p>
             </div>
             <div class="member">
-                <img src="photos/member7.jpg" alt="Team Member 7">
+                <img src="photos/members/jpid.jfif" alt="Team Member 7">
                 <h3>John Paulo Dela Cruz</h3>
-                <p>Project Manager</p>
+                <p>Member</p>
             </div>
             <div class="member">
                 <img src="photos/members/webbid.jpg" alt="Team Member 8">
                 <h3>Webb Saimon Fadul</h3>
-                <p>Project Manager</p>
+                <p>Member</p>
             </div>
             <div class="member">
                 <img src="photos/members/macid.jpg" alt="Team Member 9">
                 <h3>Mark Andrew Fernandez</h3>
-                <p>Project Manager</p>
+                <p>Member</p>
             </div>
             <div class="member">
                 <img src="photos/member10.jpg" alt="Team Member 10">
                 <h3>Carl Lawrence Revilla</h3>
-                <p>Project Manager</p>
+                <p>Member</p>
             </div>
             <div class="member">
-                <img src="photos/member11.jpg" alt="Team Member 11">
+                <img src="photos/members/eironid.jfif" alt="Team Member 11">
+                <h3>Eiron Josh D. Santos</h3>
+                <p>Member</p>
+            </div>
+            <div class="member">
+                <img src="photos/member11.jpg" alt="Team Member 12">
                 <h3>Jhon Ellis Tibay</h3>
-                <p>Project Manager</p>
+                <p>Member</p>
             </div>
         </div>
     </div>

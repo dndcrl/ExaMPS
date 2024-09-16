@@ -1,5 +1,5 @@
 <?php
-$password = 'admin_password'; // Replace with your desired admin password
+$password = 'admin_password';
 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 echo "Hashed password: " . $hashed_password;
 ?>
