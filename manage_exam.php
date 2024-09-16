@@ -8,22 +8,22 @@ $user_id = $_SESSION['user_id'];
 
 include 'db.php';
 
-// Initialize variables
+
 $exam_name = '';
 $exam_id = '';
 $success_message = '';
 
-// Function to generate a unique 6-digit ID
+// 6 digit id 
 function generateUniqueExamId($conn) {
     do {
-        $exam_id = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT); // Generate a 6-digit number
+        $exam_id = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT); // exam id generator
         $stmt = $conn->prepare("SELECT COUNT(*) FROM exams WHERE id = ?");
         $stmt->bind_param("s", $exam_id);
         $stmt->execute();
         $stmt->bind_result($count);
         $stmt->fetch();
         $stmt->close();
-    } while ($count > 0); // Regenerate if ID already exists
+    } while ($count > 0); 
 
     return $exam_id;
 }
@@ -85,7 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->close();
         }
 
-        // Handle choices
+        // handle the choices
         $choices = $question['choices'] ?? [];
         foreach ($choices as $key => $choice) {
             $choice_id = isset($choice['id']) ? intval($choice['id']) : 0;
@@ -93,14 +93,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $is_correct = isset($choice['is_correct']) ? 1 : 0;
 
             if ($choice_id == 0) {
-                // Insert new choice
+                // insert new choice
                 $stmt = $conn->prepare("INSERT INTO choices (question_id, choice_text, is_correct) VALUES (?, ?, ?)");
                 $stmt->bind_param("isi", $question_id, $choice_text, $is_correct);
                 $stmt->execute();
                 $choice_id = $stmt->insert_id;
                 $stmt->close();
             } else {
-                // Update existing choice
+                // update existing choice
                 $stmt = $conn->prepare("UPDATE choices SET choice_text = ?, is_correct = ? WHERE id = ?");
                 $stmt->bind_param("sii", $choice_text, $is_correct, $choice_id);
                 $stmt->execute();
@@ -110,7 +110,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-// Handle editing
+// editing handle
 if (isset($_GET['exam_id'])) {
     $exam_id = $_GET['exam_id'];
     $stmt = $conn->prepare("SELECT exam_name FROM exams WHERE id = ?");
@@ -161,6 +161,10 @@ if (isset($_GET['exam_id'])) {
             margin-bottom: 20px;
         }
 
+        .help-button a {
+            color: #155724;
+        }
+
         label {
             display: block;
             margin: 10px 0 5px;
@@ -200,7 +204,7 @@ if (isset($_GET['exam_id'])) {
         }
 
         .remove-question-button, .add-question-button, .add-choice-button {
-            background-color: #007bff;
+            background-color: #28a745;
             color: #fff;
             border: none;
             padding: 10px 15px;
@@ -228,7 +232,7 @@ if (isset($_GET['exam_id'])) {
         }
 
         .back-button {
-            background-color: #6c757d;
+            background-color: #28a745;
             color: #fff;
             border: none;
             padding: 10px 15px;
@@ -248,12 +252,18 @@ if (isset($_GET['exam_id'])) {
 <body>
     <div class="container">
         <h1>Create & Manage Exam</h1>
+        <p><b> Important Note: </b> Make sure to enter a name for your exam first then save it before adding questions.
+           <br>Then go back to your Dashboard, enter your created exam and add your questions and choices.
+           <br><i><b>(Always remember to save your exam!)</b></i>
+        </p>
+
+        <div class="help-button"><p>Having errors? <a href="help">Click here.</a></p></div>
 
         <?php if ($success_message): ?>
             <div class="success-message"><?php echo $success_message; ?></div>
         <?php endif; ?>
 
-        <!-- Go Back Button -->
+       
         <a href="dashboard.php" class="back-button">Go Back to Dashboard</a>
 
         <form method="post" action="">
@@ -293,7 +303,7 @@ if (isset($_GET['exam_id'])) {
     </div>
 
     <script>
-    // JavaScript functions for adding and removing questions and choices
+    // js for adding and removing questions
     function addQuestion() {
         const container = document.getElementById('questions-container');
         const index = container.children.length;

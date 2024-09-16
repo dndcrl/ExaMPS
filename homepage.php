@@ -16,7 +16,7 @@
             min-height: 100vh;
         }
 
-        /* Header styling */
+       
         header {
             background-color: #28a745;
             color: white;
@@ -25,6 +25,10 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 97%;
+            top: 0; 
+            z-index: 1000;
         }
 
         header h1 {
@@ -53,9 +57,9 @@
             text-decoration: underline;
         }
 
-        /* Hero Section */
+        /* hero */
         .hero {
-            height: 100vh; /* Full viewport height */
+            height: 100vh; 
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -74,8 +78,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('photos/greenbg.jfif') no-repeat center center/cover; /* Replace with your background image path */
-            filter: blur(1px); /* Adjust the blur amount */
+            background: url('photos/greenbg.jfif') no-repeat center center/cover; 
+            filter: blur(1px); 
             z-index: -1;
         }
 
@@ -114,7 +118,7 @@
             background-color: #218838;
         }
 
-        /* About Us Section */
+        /* aboutus section */
         #about-us {
             width: 97%;
             
@@ -128,7 +132,7 @@
 
         #about-us h2 {
             font-size: 50px;
-            margin-bottom: 20px;
+            margin-bottom: 50px;
             color: #28a745;
             text-align: center;
         }
@@ -151,6 +155,7 @@
            font-size: 18px;
            display: inline-block;
            margin: 20px; 
+           margin-top: 60px;
         }
 
        #about-us a.button:hover {
@@ -158,7 +163,7 @@
        }
 
 
-        /* Footer */
+        /* footer */
         footer {
             text-align: center;
             padding: 20px;
@@ -170,7 +175,7 @@
 </head>
 <body>
 
-    <!-- Header Section -->
+    <!-- header -->
     <header>
         <h1>ExaMPS</h1>
         <nav>
@@ -182,7 +187,7 @@
         </nav>
     </header>
 
-    <!-- Hero Section -->
+    <!-- hero -->
     <div id="main-content" class="hero">
         <div class="hero-content">
             <h2>Welcome to ExaMPS!</h2>
@@ -193,7 +198,7 @@
         </div>
     </div>
 
-    <!-- About Us Section -->
+    <!-- aboutus -->
     <div id="about-us">
         <h2>About Us</h2>
         <p>
@@ -202,9 +207,9 @@
         </p>
         <br>
         <p>
-        ExaMPS is a cutting-edge platform designed to simplify the process of creating, managing, and analyzing exams online.<br>
+        ExaMPS is a platform designed to simplify the process of creating, managing, and analyzing exams online.<br>
         Our platform is tailored for educators, making it easier to generate tests, administer them to students, and record exam results,<br>
-        including the Mean Percentage Score (MPS). This ensures efficient, accurate, and reliable assessments.
+        including the <b>Mean Percentage Score (MPS).</b> This ensures efficient, accurate, and reliable assessments.
         </p>
         <p>
         Our mission is to provide educators with the tools they need to deliver top-quality exams with minimal hassle.<br>
@@ -215,7 +220,7 @@
         </div>
     </div>
 
-    <!-- Footer Section -->
+    <!-- footer -->
     <footer>
         <p>&copy; ExaMPS. All rights reserved.</p>
     </footer>

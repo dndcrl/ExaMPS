@@ -8,16 +8,16 @@ $user_id = $_SESSION['user_id'];
 
 include 'db.php';
 
-// Handle exam deletion
+// exam deletion
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_exam'])) {
     $exam_id = $_POST['exam_id'];
 
-    // Delete the exam and its related questions and choices from the database
+    // delete exam and questions from database
     $stmt = $conn->prepare("DELETE FROM exams WHERE id = ? AND user_id = ?");
     $stmt->bind_param("ii", $exam_id, $user_id);
     $stmt->execute();
 
-    // Also delete related questions and choices
+   
     $stmt = $conn->prepare("DELETE FROM questions WHERE exam_id = ?");
     $stmt->bind_param("i", $exam_id);
     $stmt->execute();
@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_exam'])) {
     $stmt->close();
 }
 
-// Fetch user's exams
+// get user exams
 $stmt = $conn->prepare("SELECT id, exam_name FROM exams WHERE user_id = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
