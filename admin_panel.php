@@ -10,9 +10,12 @@ include 'db.php';
 
 // Admin panel to approve users
 $pending_users_query = "SELECT id, username FROM users WHERE approved = 0";
-$result = $conn->query($pending_users_query);
-?>
+$pending_result = $conn->query($pending_users_query);
 
+// Query to fetch all registered users
+$all_users_query = "SELECT id, username, approved FROM users";
+$all_users_result = $conn->query($all_users_query);
+?>
 
 <!DOCTYPE html>
 <html>
@@ -20,56 +23,144 @@ $result = $conn->query($pending_users_query);
     <title>Admin Panel</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f4f4;
             margin: 0;
-            padding: 20px;
+            padding: 0;
         }
 
         .container {
-            max-width: 800px;
-            margin: auto;
+            max-width: 900px;
+            margin: 30px auto;
             background: #fff;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        h1 {
+        h1, h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .user-item, .user-table {
             margin-bottom: 20px;
         }
 
-        .user-item {
-            margin-bottom: 10px;
-        }
-
-        .approve-button {
+        .approve-button, .logout-button {
             background-color: #007bff;
             color: #fff;
             border: none;
-            padding: 5px 10px;
+            padding: 8px 16px;
             border-radius: 4px;
             text-decoration: none;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+            margin-right: 10px;
         }
 
-        .approve-button:hover {
+        .approve-button:hover, .logout-button:hover {
             background-color: #0056b3;
+        }
+
+        .user-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .user-table th, .user-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .user-table th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        .user-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .user-table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        @media (max-width: 768px) {
+            .user-table, .user-table thead, .user-table tbody, .user-table th, .user-table td, .user-table tr {
+                display: block;
+            }
+
+            .user-table th {
+                display: none;
+            }
+
+            .user-table td {
+                display: flex;
+                justify-content: space-between;
+                padding: 10px 0;
+                border-bottom: 1px solid #ddd;
+                position: relative;
+            }
+
+            .user-table td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 0;
+                width: 50%;
+                padding-right: 10px;
+                font-weight: bold;
+                text-align: left;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Admin Panel - Approve Users</h1>
-
+        <h1>Admin Panel</h1>
+        
+        <a href="logout.php" class="logout-button">Logout</a>
+        
+        <h2>Approve Users</h2>
         <?php
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                echo "<div class='user-item'>{$row['username']} <a href='approve_user.php?id={$row['id']}' class='approve-button'>Approve</a></div>";
+        if ($pending_result->num_rows > 0) {
+            while ($row = $pending_result->fetch_assoc()) {
+                echo "<div class='user-item'>
+                    {$row['username']} 
+                    <a href='approve_user.php?id={$row['id']}' class='approve-button'>Approve</a>
+                </div>";
             }
         } else {
             echo "<p>No pending users to approve.</p>";
         }
         ?>
+
+        <h2>All Registered Users</h2>
+        <table class="user-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Approved</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                if ($all_users_result->num_rows > 0) {
+                    while ($row = $all_users_result->fetch_assoc()) {
+                        echo "<tr>
+                            <td data-label='ID'>{$row['id']}</td>
+                            <td data-label='Username'>{$row['username']}</td>
+                            <td data-label='Approved'>" . ($row['approved'] ? 'Yes' : 'No') . "</td>
+                        </tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='3'>No users found.</td></tr>";
+                }
+                ?>
+            </tbody>
+        </table>
     </div>
 </body>
 </html>

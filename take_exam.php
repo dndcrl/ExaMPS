@@ -33,15 +33,17 @@ if (isset($_POST['exam_id'])) {
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Take Exam</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
             margin: 0;
             padding: 20px;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         .container {
@@ -51,6 +53,7 @@ if (isset($_POST['exam_id'])) {
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         h1 {
@@ -74,7 +77,7 @@ if (isset($_POST['exam_id'])) {
         }
 
         button {
-            background-color: #007bff;
+            background-color: #28a745;
             color: #fff;
             border: none;
             padding: 10px 15px;
@@ -86,9 +89,42 @@ if (isset($_POST['exam_id'])) {
         button:hover {
             opacity: 0.8;
         }
+
+        /* dark mode */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+
+        .container.dark-mode {
+            background-color: #1e1e1e;
+        }
+
+        .question-container.dark-mode {
+            background-color: #2a2a2a;
+            border: 1px solid #444;
+        }
+
+        .dark-mode-toggle {
+            background-color: #444;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            position: fixed;
+            top: 10px;
+            right: 20px;
+        }
+
+        .dark-mode-toggle:hover {
+            background-color: #666;
+        }
     </style>
 </head>
 <body>
+    <button class="dark-mode-toggle" onclick="toggleDarkMode()">Enable Dark Mode</button>
+
     <div class="container">
         <h1>Exam: <?php echo htmlspecialchars($exam_name); ?></h1>
         
@@ -97,11 +133,11 @@ if (isset($_POST['exam_id'])) {
 
             <?php foreach ($questions_data as $index => $question): ?>
                 <div class="question-container">
-                    <p><?php echo htmlspecialchars($question['question_text']); ?></p>
+                    <p><?php echo 'Question ' . ($index + 1) . ': ' . htmlspecialchars($question['question_text']); ?></p>
                     <?php foreach ($question['choices'] as $key => $choice): ?>
                         <div class="choice-container">
                             <input type="radio" id="choice_<?php echo $index; ?>_<?php echo $key; ?>" name="questions[<?php echo $index; ?>][choice]" value="<?php echo $choice['id']; ?>">
-                            <label for="choice_<?php echo $index; ?>_<?php echo $key; ?>" class="choice-label"><?php echo chr(65 + $key); ?>: <?php echo htmlspecialchars($choice['choice_text']); ?></label>
+                            <label for="choice_<?php echo $index; ?>_<?php echo $key; ?>" class="choice-label"><?php echo chr(65 + $key) . ': ' . htmlspecialchars($choice['choice_text']); ?></label>
                         </div>
                     <?php endforeach; ?>
                 </div>
@@ -110,5 +146,21 @@ if (isset($_POST['exam_id'])) {
             <button type="submit">Submit Exam</button>
         </form>
     </div>
+
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            document.querySelectorAll('.container, .question-container').forEach((element) => {
+                element.classList.toggle('dark-mode');
+            });
+
+            const darkModeButton = document.querySelector('.dark-mode-toggle');
+            if (document.body.classList.contains('dark-mode')) {
+                darkModeButton.textContent = 'Disable Dark Mode';
+            } else {
+                darkModeButton.textContent = 'Enable Dark Mode';
+            }
+        }
+    </script>
 </body>
 </html>

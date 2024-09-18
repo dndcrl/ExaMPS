@@ -6,8 +6,9 @@
     <title>Homepage</title>
     <style>
         body {
+            overflow-x: hidden;
             font-family: 'Segoe UI', sans-serif;
-            background-color: #f4f4f4;
+            background-color: #ddd;
             margin: 0;
             padding: 0;
             color: #333;
@@ -16,17 +17,16 @@
             min-height: 100vh;
         }
 
-       
         header {
             background-color: #28a745;
             color: white;
-            padding: 10px 20px;
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             position: fixed;
-            width: 97%;
+            width: 97.5%;
             top: 0; 
             z-index: 1000;
         }
@@ -44,7 +44,7 @@
         }
 
         nav ul li {
-            margin-left: 60px;
+            margin-left: 40px;
         }
 
         nav ul li a {
@@ -59,15 +59,16 @@
 
         /* hero */
         .hero {
-            height: 100vh; 
+            width: fit-content;
+            height: 100vh;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
+            padding: 0 80px;
             position: relative;
-            color: white;
-            text-align: center;
-            padding: 0 20px;
+            background-color: #f9f9f9;
+            background: url('photos/greenbg.jfif')  center center/cover;
+            filter: brightness(0.9);
             overflow: hidden;
         }
 
@@ -78,56 +79,101 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('photos/greenbg.jfif') no-repeat center center/cover; 
-            filter: blur(1px); 
+            background-color: rgba(40, 167, 69, 0.8); /* Adds a green overlay */
             z-index: -1;
         }
 
         .hero-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero h2 {
-            font-size: 80px;
-            margin-bottom: 20px;
-            font-weight: 700;
+            width: 45%;
             color: white;
         }
 
-        .hero p {
+        .hero-content h2 {
+            font-size: 60px;
+            margin-bottom: 20px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .hero-content p {
             font-size: 18px;
             line-height: 1.6;
-            max-width: 800px;
+            color: #ddd;
+            font-weight: 400;
             margin-bottom: 30px;
+        }
+
+        .cta-container {
+            width: 40%;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
             color: #333;
+        }
+
+        .cta-container h3 {
+            margin-top: 0;
+            font-size: 24px;
+            color: #28a745;
+            font-weight: 600;
+        }
+
+        .cta-container p {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .cta-container a.button {
+            display: block;
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            text-align: center;
+            font-size: 16px;
+            margin-bottom: 20px;
             font-weight: bold;
         }
 
-        .hero a.button {
-            background-color: #28a745;
-            color: white;
-            padding: 15px 25px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-size: 18px;
-            display: inline-block;
+        .cta-container a.button:hover {
+            background-color: #218838;
         }
 
-        .hero a.button:hover {
+        .cta-container form input[type="text"] {
+            padding: 10px;
+            width: 95%;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .cta-container form button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+        }
+
+        .cta-container form button:hover {
             background-color: #218838;
         }
 
         /* aboutus section */
         #about-us {
             width: 97%;
-            
             padding: 20px;
-            background: white;
+            background: #ddd;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             margin: 0 auto;
             text-align: center;
-            
         }
 
         #about-us h2 {
@@ -147,21 +193,20 @@
         }
 
         #about-us a.button {
-           background-color: #28a745;
-           color: white;
-           padding: 10px 20px;
-           border-radius: 5px;
-           text-decoration: none;
-           font-size: 18px;
-           display: inline-block;
-           margin: 20px; 
-           margin-top: 60px;
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 18px;
+            display: inline-block;
+            margin: 20px; 
+            margin-top: 60px;
         }
 
-       #about-us a.button:hover {
-       background-color: #218838;
-       }
-
+        #about-us a.button:hover {
+            background-color: #218838;
+        }
 
         /* footer */
         footer {
@@ -170,6 +215,11 @@
             background-color: #28a745;
             color: white;
             margin-top: auto;
+        }
+
+        .footercontent .changelogsbtn {
+            text-decoration: none;
+            color: lightgreen;
         }
     </style>
 </head>
@@ -192,9 +242,19 @@
         <div class="hero-content">
             <h2>Welcome to ExaMPS!</h2>
             <p>
-                This platform allows teachers to create, manage, and administer exams online with the feature of Automated MPS (Mean Score Percentage System). The system is designed to be user-friendly, secure, and efficient. Whether you're a teacher managing exams or a student taking them, this platform provides everything you need.
+                A user-friendly platform to create, manage, and administer exams with Automated Mean Percentage Score (MPS) System for accurate, efficient assessments.
             </p>
-            <a href="login.php" class="button">Get Started</a>
+        </div>
+        <div class="cta-container">
+            <h3>Are you an ExaMPS user?</h3>
+            <a href="login.php" class="button">Login here</a>
+
+            <h3>Are you a student taking an exam?</h3>
+            <form method="post" action="take_exam.php">
+                <label for="exam_id">Enter Exam ID:</label><br>
+                <input type="text" class="examid" id="exam_id" name="exam_id" required>
+                <button type="submit">Start Exam</button>
+            </form>
         </div>
     </div>
 
@@ -202,27 +262,23 @@
     <div id="about-us">
         <h2>About Us</h2>
         <p>
-        At ExaMPS, we understand the challenges educators face when it comes to designing, managing, and analyzing exams.
-        <br>That's why we've developed a comprehensive platform that simplifies the entire process.
-        </p>
-        <br>
-        <p>
-        ExaMPS is a platform designed to simplify the process of creating, managing, and analyzing exams online.<br>
-        Our platform is tailored for educators, making it easier to generate tests, administer them to students, and record exam results,<br>
-        including the <b>Mean Percentage Score (MPS).</b> This ensures efficient, accurate, and reliable assessments.
+            At ExaMPS, we understand the challenges educators face when it comes to designing, managing, and analyzing exams. That's why we've developed a comprehensive platform that simplifies the entire process.
         </p>
         <p>
-        Our mission is to provide educators with the tools they need to deliver top-quality exams with minimal hassle.<br>
-        We focus on user-friendly interfaces and a streamlined experience to empower both teachers and students.
+            Our platform is tailored for educators, making it easier to generate tests, administer them to students, and record exam results, including the <b>Mean Percentage Score (MPS)</b>. This ensures efficient, accurate, and reliable assessments.
+        </p>
+        <p>
+            Our mission is to provide educators with the tools they need to deliver top-quality exams with minimal hassle. We focus on user-friendly interfaces and a streamlined experience to empower both teachers and students.
         </p>
 
         <a href="aboutus.php" class="button">Read More...</a>
-        </div>
     </div>
 
     <!-- footer -->
     <footer>
-        <p>&copy; ExaMPS. All rights reserved.</p>
+        <div class="footercontent">
+        <p>&copy; ExaMPS. All rights reserved. <a href="changelogs.php" class="changelogsbtn">View Changelogs</a></p>
+        </div>
     </footer>
 
 </body>

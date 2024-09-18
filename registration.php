@@ -133,7 +133,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <div class="container">
         <h1>Register</h1>
-        <p>Have your own ExaMPS Account.</p>
+        <p><b>Note:</b> Only authorized users can register an ExaMPS Account.</p>
         <?php
         // Display message if set
         if ($message != "") {

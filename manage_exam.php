@@ -139,120 +139,121 @@ if (isset($_GET['exam_id'])) {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Manage Exam</title>
+    <title>Create & Manage Exam</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-        }
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
 
-        .container {
-            max-width: 800px;
-            margin: auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
+.container {
+    max-width: 800px;
+    margin: auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
 
-        h1 {
-            margin-bottom: 20px;
-        }
+h1 {
+    margin-bottom: 20px;
+}
 
-        .help-button a {
-            color: #155724;
-        }
+.help-button a {
+    color: #155724;
+}
 
-        label {
-            display: block;
-            margin: 10px 0 5px;
-            font-weight: bold;
-        }
+label {
+    display: block;
+    margin: 10px 0 5px;
+    font-weight: bold;
+}
 
-        input[type="text"], input[type="hidden"] {
-            width: calc(100% - 22px);
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
+input[type="text"], input[type="hidden"] {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
 
-        .question-container {
-            margin-bottom: 20px;
-            padding: 15px;
-            background: #f9f9f9;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-        }
+.question-container {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
 
-        .choice-container {
-            margin: 10px 0;
-            padding: 10px;
-            background: #fff;
-            border-radius: 4px;
-            border: 1px solid #ddd;
-            display: flex;
-            align-items: center;
-        }
+.choice-container {
+    margin: 10px 0;
+    padding: 10px;
+    background: #fff;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+}
 
-        .choice-label {
-            width: 20px;
-            font-weight: bold;
-            margin-right: 10px;
-        }
+.choice-label {
+    width: 20px;
+    font-weight: bold;
+    margin-right: 10px;
+}
 
-        .remove-question-button, .add-question-button, .add-choice-button {
-            background-color: #28a745;
-            color: #fff;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            margin: 5px;
-        }
+.remove-question-button, .add-question-button, .add-choice-button {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    margin: 5px;
+}
 
-        .remove-question-button {
-            background-color: #dc3545;
-        }  
+.remove-question-button {
+    background-color: #dc3545;
+}  
 
-        .remove-question-button:hover, .add-question-button:hover, .add-choice-button:hover {
-            opacity: 0.8;
-        }
+.remove-question-button:hover, .add-question-button:hover, .add-choice-button:hover {
+    opacity: 0.8;
+}
 
-        .success-message {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-            padding: 10px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-        }
+.success-message {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
 
-        .back-button {
-            background-color: #28a745;
-            color: #fff;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            text-align: center;
-            display: inline-block;
-            text-decoration: none;
-        }
+.back-button {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: center;
+    display: inline-block;
+    text-decoration: none;
+}
 
-        .back-button:hover {
-            background-color: #5a6268;
-        }
+.back-button:hover {
+    background-color: #5a6268;
+}
+
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Create & Manage Exam</h1>
-        <p><b> Important Note: </b> Make sure to enter a name for your exam first then save it before adding questions.
+        <p><b>Important Note:</b> Make sure to enter a name for your exam first then save it before adding questions.
            <br>Then go back to your Dashboard, enter your created exam and add your questions and choices.
            <br><i><b>(Always remember to save your exam!)</b></i>
         </p>
@@ -260,10 +261,9 @@ if (isset($_GET['exam_id'])) {
         <div class="help-button"><p>Having errors? <a href="help">Click here.</a></p></div>
 
         <?php if ($success_message): ?>
-            <div class="success-message"><?php echo $success_message; ?></div>
+            <div class="success-message"><?php echo htmlspecialchars($success_message); ?></div>
         <?php endif; ?>
 
-       
         <a href="dashboard.php" class="back-button">Go Back to Dashboard</a>
 
         <form method="post" action="">
@@ -275,17 +275,17 @@ if (isset($_GET['exam_id'])) {
             <div id="questions-container">
                 <?php foreach ($questions_data as $index => $question): ?>
                     <div class="question-container" data-index="<?php echo $index; ?>">
-                        <label for="question_text_<?php echo $index; ?>">Question:</label>
+                        <label for="question_text_<?php echo $index; ?>">Question <?php echo $index + 1; ?>:</label>
                         <input type="text" id="question_text_<?php echo $index; ?>" name="questions[<?php echo $index; ?>][question_text]" value="<?php echo htmlspecialchars($question['question_text']); ?>" required>
-                        <input type="hidden" name="questions[<?php echo $index; ?>][id]" value="<?php echo $question['id']; ?>">
+                        <input type="hidden" name="questions[<?php echo $index; ?>][id]" value="<?php echo htmlspecialchars($question['id']); ?>">
 
                         <div class="choices-container" id="choices-container_<?php echo $index; ?>">
                             <?php foreach ($question['choices'] as $key => $choice): ?>
                                 <div class="choice-container">
-                                    <span class="choice-label"><?php echo chr(65 + $key); ?>:</span>
+                                    <span class="choice-label"><?php echo chr(65 + $key); ?>:</span> <!-- A, B, C, ... -->
                                     <input type="text" name="questions[<?php echo $index; ?>][choices][<?php echo $key; ?>][choice_text]" value="<?php echo htmlspecialchars($choice['choice_text']); ?>">
                                     <input type="checkbox" name="questions[<?php echo $index; ?>][choices][<?php echo $key; ?>][is_correct]" <?php echo $choice['is_correct'] ? 'checked' : ''; ?>> Correct
-                                    <input type="hidden" name="questions[<?php echo $index; ?>][choices][<?php echo $key; ?>][id]" value="<?php echo $choice['id']; ?>">
+                                    <input type="hidden" name="questions[<?php echo $index; ?>][choices][<?php echo $key; ?>][id]" value="<?php echo htmlspecialchars($choice['id']); ?>">
                                     <button type="button" class="remove-choice-button" onclick="removeChoice(this)">Remove Choice</button>
                                 </div>
                             <?php endforeach; ?>
@@ -303,13 +303,12 @@ if (isset($_GET['exam_id'])) {
     </div>
 
     <script>
-    // js for adding and removing questions
     function addQuestion() {
         const container = document.getElementById('questions-container');
         const index = container.children.length;
         const questionHtml = `
             <div class="question-container" data-index="${index}">
-                <label for="question_text_${index}">Question:</label>
+                <label for="question_text_${index}">Question ${index + 1}:</label>
                 <input type="text" id="question_text_${index}" name="questions[${index}][question_text]" required>
                 <input type="hidden" name="questions[${index}][id]" value="">
 
@@ -319,6 +318,7 @@ if (isset($_GET['exam_id'])) {
                         <input type="text" name="questions[${index}][choices][0][choice_text]">
                         <input type="checkbox" name="questions[${index}][choices][0][is_correct]"> Correct
                         <input type="hidden" name="questions[${index}][choices][0][id]" value="">
+                        <button type="button" class="remove-choice-button" onclick="removeChoice(this)">Remove Choice</button>
                     </div>
                 </div>
 
@@ -329,13 +329,9 @@ if (isset($_GET['exam_id'])) {
         container.insertAdjacentHTML('beforeend', questionHtml);
     }
 
-    function removeQuestion(button) {
-        button.parentElement.remove();
-    }
-
     function addChoice(questionIndex) {
-        const container = document.getElementById(`choices-container_${questionIndex}`);
-        const choiceIndex = container.children.length;
+        const choicesContainer = document.getElementById(`choices-container_${questionIndex}`);
+        const choiceIndex = choicesContainer.children.length;
         const choiceHtml = `
             <div class="choice-container">
                 <span class="choice-label">${String.fromCharCode(65 + choiceIndex)}:</span>
@@ -345,12 +341,17 @@ if (isset($_GET['exam_id'])) {
                 <button type="button" class="remove-choice-button" onclick="removeChoice(this)">Remove Choice</button>
             </div>
         `;
-        container.insertAdjacentHTML('beforeend', choiceHtml);
+        choicesContainer.insertAdjacentHTML('beforeend', choiceHtml);
     }
 
     function removeChoice(button) {
         button.parentElement.remove();
     }
+
+    function removeQuestion(button) {
+        button.parentElement.remove();
+    }
     </script>
 </body>
 </html>
+

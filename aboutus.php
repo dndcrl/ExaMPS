@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
-            background-color: #f4f4f4;
+            background-color: white;
             margin: 0;
             padding: 0;
             color: #333;
@@ -16,10 +16,15 @@
         header {
             background-color: #28a745;
             color: white;
-            padding: 10px 20px;
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 97.5%;
+            top: 0; 
+            z-index: 1000;
         }
 
         header h1 {
@@ -35,12 +40,13 @@
         }
 
         nav ul li {
-            margin-left: 60px;
+            margin-left: 40px;
         }
 
         nav ul li a {
             color: white;
             text-decoration: none;
+            font-size: 16px;
         }
 
         nav ul li a:hover {
@@ -52,7 +58,7 @@
             max-width: 1200px;
             margin: 20px auto;
             padding: 20px;
-            background: white;
+            background-color: #ddd;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
@@ -153,7 +159,7 @@
 
         .team-section .member {
             flex: 0 0 auto;
-            background: whitesmoke;
+            background: #f0e8e6;
             padding: 20px;
             margin: 20px;
             text-align: center;
@@ -190,6 +196,15 @@
             color: white;
         }
 
+        .footercontent .changelogsbtn {
+            text-decoration: none;
+            color: lightgreen;
+        }
+
+        
+
+        
+
     </style>
 </head>
 <body>
@@ -206,6 +221,8 @@
 </header>
 
 <div class="content">
+    <br>
+    <br>
     <h2>About ExaMPS</h2>
     <div class="section">
         <p>
@@ -379,7 +396,9 @@
 </div>
 
 <footer>
-    <p>&copy; ExaMPS. All rights reserved.</p>
+    <div class="footercontent">
+    <p>&copy; ExaMPS. All rights reserved. <a href="changelogs.php" class="changelogsbtn">View Changelogs</a></p>
+    </div>
 </footer>
 
 <script>
