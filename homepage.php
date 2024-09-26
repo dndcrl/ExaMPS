@@ -237,26 +237,33 @@
         </nav>
     </header>
 
+
     <!-- hero -->
     <div id="main-content" class="hero">
-        <div class="hero-content">
-            <h2>Welcome to ExaMPS!</h2>
-            <p>
-                A user-friendly platform to create, manage, and administer exams with Automated Mean Percentage Score (MPS) System for accurate, efficient assessments.
-            </p>
-        </div>
-        <div class="cta-container">
-            <h3>Are you an ExaMPS user?</h3>
-            <a href="login.php" class="button">Login here</a>
-
-            <h3>Are you a student taking an exam?</h3>
-            <form method="post" action="take_exam.php">
-                <label for="exam_id">Enter Exam ID:</label><br>
-                <input type="text" class="examid" id="exam_id" name="exam_id" required>
-                <button type="submit">Start Exam</button>
-            </form>
-        </div>
+    <div class="hero-content">
+        <h2>Welcome to ExaMPS!</h2>
+        <p>
+            A user-friendly platform to create, manage, and administer exams with Automated Mean Percentage Score (MPS) System for accurate, efficient assessments.
+        </p>
     </div>
+    <div class="cta-container">
+        <h3>Are you an ExaMPS user?</h3>
+        <a href="login.php" class="button">Login here</a>
+
+        <h3>Are you a student taking an exam?</h3>
+
+        <?php if (isset($_GET['error']) && $_GET['error'] === 'invalid'): ?>
+            <p style="color: red; font-weight: bold;">Invalid exam ID. Please try again.</p>
+        <?php endif; ?>
+
+        <form method="post" action="take_exam.php">
+            <label for="exam_id">Enter Exam ID:</label><br>
+            <input type="text" class="examid" id="exam_id" name="exam_id" required>
+            <button type="submit">Start Exam</button>
+        </form>
+    </div>
+</div>
+
 
     <!-- aboutus -->
     <div id="about-us">

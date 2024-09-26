@@ -45,7 +45,7 @@ $exams_result = $stmt->get_result();
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
-            background-color: #f4f4f4;
+            background-color: #28a745;
             margin: 0;
             padding: 0;
             display: flex;
@@ -57,7 +57,7 @@ $exams_result = $stmt->get_result();
         .container {
             max-width: 800px;
             width: 100%;
-            background: #fff;
+            background: #ddd;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -65,7 +65,7 @@ $exams_result = $stmt->get_result();
         }
 
         h1 {
-            color: #28a745;
+            color: #000;
             font-size: 24px;
             margin-bottom: 20px;
         }
@@ -94,7 +94,7 @@ $exams_result = $stmt->get_result();
 
         .button {
             display: inline-block;
-            background-color: #007bff;
+            background-color:  #28a745;
             color: #fff;
             padding: 10px 15px;
             border-radius: 4px;

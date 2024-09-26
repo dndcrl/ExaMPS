@@ -141,9 +141,9 @@ if (isset($_GET['exam_id'])) {
 <head>
     <title>Create & Manage Exam</title>
     <style>
-        body {
+body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #28a745;
     margin: 0;
     padding: 20px;
 }
@@ -178,6 +178,13 @@ input[type="text"], input[type="hidden"] {
     border: 1px solid #ddd;
     border-radius: 4px;
 }
+
+input[type="text"][disabled] {
+    background-color: #f1f1f1;
+    border: none;
+    color: #555;
+}
+
 
 .question-container {
     margin-bottom: 20px;
@@ -267,39 +274,42 @@ input[type="text"], input[type="hidden"] {
         <a href="dashboard.php" class="back-button">Go Back to Dashboard</a>
 
         <form method="post" action="">
-            <label for="exam_name">Exam Name:</label>
-            <input type="text" id="exam_name" name="exam_name" value="<?php echo htmlspecialchars($exam_name); ?>" required>
+    <label for="exam_name">Exam Name:</label>
+    <input type="text" id="exam_name" name="exam_name" value="<?php echo htmlspecialchars($exam_name); ?>" required>
 
-            <input type="hidden" id="exam_id" name="exam_id" value="<?php echo htmlspecialchars($exam_id); ?>">
+    <label for="exam_id_display">Exam ID:</label>
+    <input type="text" id="exam_id_display" value="<?php echo htmlspecialchars($exam_id); ?>" disabled>
+    <input type="hidden" id="exam_id" name="exam_id" value="<?php echo htmlspecialchars($exam_id); ?>">
 
-            <div id="questions-container">
-                <?php foreach ($questions_data as $index => $question): ?>
-                    <div class="question-container" data-index="<?php echo $index; ?>">
-                        <label for="question_text_<?php echo $index; ?>">Question <?php echo $index + 1; ?>:</label>
-                        <input type="text" id="question_text_<?php echo $index; ?>" name="questions[<?php echo $index; ?>][question_text]" value="<?php echo htmlspecialchars($question['question_text']); ?>" required>
-                        <input type="hidden" name="questions[<?php echo $index; ?>][id]" value="<?php echo htmlspecialchars($question['id']); ?>">
+    <div id="questions-container">
+        <?php foreach ($questions_data as $index => $question): ?>
+            <div class="question-container" data-index="<?php echo $index; ?>">
+                <label for="question_text_<?php echo $index; ?>">Question <?php echo $index + 1; ?>:</label>
+                <input type="text" id="question_text_<?php echo $index; ?>" name="questions[<?php echo $index; ?>][question_text]" value="<?php echo htmlspecialchars($question['question_text']); ?>" required>
+                <input type="hidden" name="questions[<?php echo $index; ?>][id]" value="<?php echo htmlspecialchars($question['id']); ?>">
 
-                        <div class="choices-container" id="choices-container_<?php echo $index; ?>">
-                            <?php foreach ($question['choices'] as $key => $choice): ?>
-                                <div class="choice-container">
-                                    <span class="choice-label"><?php echo chr(65 + $key); ?>:</span> <!-- A, B, C, ... -->
-                                    <input type="text" name="questions[<?php echo $index; ?>][choices][<?php echo $key; ?>][choice_text]" value="<?php echo htmlspecialchars($choice['choice_text']); ?>">
-                                    <input type="checkbox" name="questions[<?php echo $index; ?>][choices][<?php echo $key; ?>][is_correct]" <?php echo $choice['is_correct'] ? 'checked' : ''; ?>> Correct
-                                    <input type="hidden" name="questions[<?php echo $index; ?>][choices][<?php echo $key; ?>][id]" value="<?php echo htmlspecialchars($choice['id']); ?>">
-                                    <button type="button" class="remove-choice-button" onclick="removeChoice(this)">Remove Choice</button>
-                                </div>
-                            <?php endforeach; ?>
+                <div class="choices-container" id="choices-container_<?php echo $index; ?>">
+                    <?php foreach ($question['choices'] as $key => $choice): ?>
+                        <div class="choice-container">
+                            <span class="choice-label"><?php echo chr(65 + $key); ?>:</span> <!-- A, B, C, ... -->
+                            <input type="text" name="questions[<?php echo $index; ?>][choices][<?php echo $key; ?>][choice_text]" value="<?php echo htmlspecialchars($choice['choice_text']); ?>">
+                            <input type="checkbox" name="questions[<?php echo $index; ?>][choices][<?php echo $key; ?>][is_correct]" <?php echo $choice['is_correct'] ? 'checked' : ''; ?>> Correct
+                            <input type="hidden" name="questions[<?php echo $index; ?>][choices][<?php echo $key; ?>][id]" value="<?php echo htmlspecialchars($choice['id']); ?>">
+                            <button type="button" class="remove-choice-button" onclick="removeChoice(this)">Remove Choice</button>
                         </div>
+                    <?php endforeach; ?>
+                </div>
 
-                        <button type="button" class="add-choice-button" onclick="addChoice(<?php echo $index; ?>)">Add Choice</button>
-                        <button type="button" class="remove-question-button" onclick="removeQuestion(this)">Remove Question</button>
-                    </div>
-                <?php endforeach; ?>
+                <button type="button" class="add-choice-button" onclick="addChoice(<?php echo $index; ?>)">Add Choice</button>
+                <button type="button" class="remove-question-button" onclick="removeQuestion(this)">Remove Question</button>
             </div>
+        <?php endforeach; ?>
+    </div>
 
-            <button type="button" class="add-question-button" onclick="addQuestion()">Add Question</button>
-            <button type="submit">Save Exam</button>
-        </form>
+    <button type="button" class="add-question-button" onclick="addQuestion()">Add Question</button>
+    <button type="submit">Save Exam</button>
+</form>
+
     </div>
 
     <script>

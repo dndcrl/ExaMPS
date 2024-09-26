@@ -5,9 +5,9 @@ $exam_id = 0;
 $exam_name = '';
 $questions_data = [];
 
-// Check if exam ID is provided
-if (isset($_POST['exam_id'])) {
-    $exam_id = intval($_POST['exam_id']);
+// Check if exam ID is provided via GET
+if (isset($_GET['exam_id'])) {
+    $exam_id = intval($_GET['exam_id']);
     $stmt = $conn->prepare("SELECT exam_name FROM exams WHERE id = ?");
     $stmt->bind_param("i", $exam_id);
     $stmt->execute();
@@ -15,6 +15,13 @@ if (isset($_POST['exam_id'])) {
     $stmt->fetch();
     $stmt->close();
 
+    if (empty($exam_name)) {
+        // Redirect to homepage with error if exam ID is invalid
+        header("Location: homepage.php?error=invalid");
+        exit();
+    }
+
+    // Fetch questions for the exam
     $questions_result = $conn->query("SELECT * FROM questions WHERE exam_id = $exam_id");
     while ($question = $questions_result->fetch_assoc()) {
         $question_id = $question['id'];
@@ -31,6 +38,7 @@ if (isset($_POST['exam_id'])) {
     exit;
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
