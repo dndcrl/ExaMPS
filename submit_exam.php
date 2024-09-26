@@ -1,5 +1,21 @@
 <?php
 
+include 'db.php';
+
+
+$exam_id = isset($_POST['exam_id']) ? intval($_POST['exam_id']) : 0;
+$name = isset($_POST['name']) ? $_POST['name'] : '';
+
+if (empty($name)) {
+    die("No name provided.");
+}
+
+
+$stmt = $conn->prepare("INSERT INTO exam_submissions (exam_id, name) VALUES (?, ?)");
+$stmt->bind_param("is", $exam_id, $name);
+$stmt->execute();
+$stmt->close();
+
 session_start();
 if (!isset($_SESSION['user_id'])) {
     die("User not logged in.");
@@ -7,7 +23,7 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 
 
-include 'db.php';
+
 ?>
 
 <!DOCTYPE html>
@@ -46,7 +62,7 @@ include 'db.php';
         $questions = isset($_POST['questions']) ? $_POST['questions'] : [];
 
         if ($exam_id > 0) {
-            // Display the thank you message
+            
             echo "<h1>Exam Submitted</h1>";
             echo "<p>Thank you for taking the exam!</p>";
         } else {

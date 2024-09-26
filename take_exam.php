@@ -137,7 +137,8 @@ if (isset($_GET['exam_id'])) {
         <h1>Exam: <?php echo htmlspecialchars($exam_name); ?></h1>
         
         <form method="post" action="submit_exam.php">
-            <input type="hidden" name="exam_id" value="<?php echo $exam_id; ?>">
+        <input type="hidden" name="exam_id" value="<?php echo $exam_id; ?>">
+        <input type="hidden" name="name" value="<?php echo htmlspecialchars($_GET['name']); ?>"> <!-- Ensure name is passed -->
 
             <?php foreach ($questions_data as $index => $question): ?>
                 <div class="question-container">

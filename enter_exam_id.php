@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         body {
             font-family: 'Segoe UI', sans-serif;
-            background-color: #f5f5f5;
+            background-color: #28a745;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -125,16 +125,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             unset($_SESSION['error']); // Clear the error message
         }
         ?>
-        <form method="get" action="take_exam.php">
-        <div class="input-group">
-        <label for="name">Your Name:</label>
-        <input type="text" id="name" name="name" placeholder="Enter your name" required>
-        </div>
-        <div class="input-group">
-        <label for="exam_id">Exam ID:</label>
-        <input type="text" id="exam_id" name="exam_id" placeholder="Enter exam ID" required>
-        </div>
-        <button type="submit">Start Exam</button>
+
+        <form method="GET" action="take_exam.php">
+    <input type="text" name="name" placeholder="Enter your name" required>
+    <input type="text" name="exam_id" placeholder="Enter exam ID" required>
+    <button type="submit">Start Exam</button>
+
         </form>
 
     </div>

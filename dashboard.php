@@ -17,7 +17,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_exam'])) {
     $stmt->bind_param("ii", $exam_id, $user_id);
     $stmt->execute();
 
-   
     $stmt = $conn->prepare("DELETE FROM questions WHERE exam_id = ?");
     $stmt->bind_param("i", $exam_id);
     $stmt->execute();
@@ -34,6 +33,8 @@ $stmt = $conn->prepare("SELECT id, exam_name FROM exams WHERE user_id = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $exams_result = $stmt->get_result();
+
+$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -94,7 +95,7 @@ $exams_result = $stmt->get_result();
 
         .button {
             display: inline-block;
-            background-color:  #28a745;
+            background-color: #28a745;
             color: #fff;
             padding: 10px 15px;
             border-radius: 4px;
@@ -125,7 +126,7 @@ $exams_result = $stmt->get_result();
             background-color: #c82333;
         }
 
-        .delete-button {
+        .delete-button, .results-button {
             background-color: #dc3545;
             color: white;
             padding: 5px 10px;
@@ -133,11 +134,28 @@ $exams_result = $stmt->get_result();
             border-radius: 4px;
             cursor: pointer;
             font-size: 12px;
+            margin: 0; /* Remove margin */
+            margin-left: 5px; /* Add a small margin to the left of results button */
+            text-decoration: none;
         }
 
         .delete-button:hover {
             background-color: #c82333;
         }
+
+        .results-button {
+            background-color: #28a745;
+            color: #ddd !important;
+            text-decoration: none;
+           
+        
+        }
+
+        .results-button:hover {
+            background-color: #0056b3;
+            color: #000;
+        }
+
     </style>
 </head>
 <body>
@@ -153,14 +171,18 @@ $exams_result = $stmt->get_result();
                         <div>
                             <a href="manage_exam.php?exam_id=<?php echo urlencode($row['id']); ?>"><?php echo htmlspecialchars($row['exam_name']); ?></a>
                         </div>
-                        <form method="post" action="" onsubmit="return confirm('Are you sure you want to delete this exam?');">
-                            <input type="hidden" name="exam_id" value="<?php echo $row['id']; ?>">
-                            <button type="submit" name="delete_exam" class="delete-button">Delete</button>
-                        </form>
+                        <div style="display: flex; align-items: center;">
+                            <form method="post" action="" onsubmit="return confirm('Are you sure you want to delete this exam?');" style="margin: 0;">
+                                <input type="hidden" name="exam_id" value="<?php echo $row['id']; ?>">
+                                <button type="submit" name="delete_exam" class="delete-button">Delete</button>
+                            </form>
+                            <a href="results.php?exam_id=<?php echo urlencode($row['id']); ?>" class="results-button">Results</a> <!-- Results button next to delete -->
+                        </div>
                     </li>
                 <?php endwhile; ?>
             </ul>
         </div>
+
         <a href="logout.php" class="logout-button">Logout</a>
     </div>
 </body>
