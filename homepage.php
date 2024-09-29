@@ -79,7 +79,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(40, 167, 69, 0.8); /* Adds a green overlay */
+            background-color: rgba(40, 167, 69, 0.8); 
             z-index: -1;
         }
 
@@ -141,31 +141,6 @@
             background-color: #218838;
         }
 
-        .cta-container form input[type="text"] {
-            padding: 10px;
-            width: 95%;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-
-        .cta-container form button {
-            background-color: #28a745;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            width: 100%;
-            font-weight: bold;
-        }
-
-        .cta-container form button:hover {
-            background-color: #218838;
-        }
-
         /* aboutus section */
         #about-us {
             width: 97%;
@@ -208,7 +183,7 @@
             background-color: #218838;
         }
 
-        /* footer */
+  
         footer {
             text-align: center;
             padding: 20px;
@@ -252,15 +227,7 @@
 
         <h3>Are you a student taking an exam?</h3>
 
-        <?php if (isset($_GET['error']) && $_GET['error'] === 'invalid'): ?>
-            <p style="color: red; font-weight: bold;">Invalid exam ID. Please try again.</p>
-        <?php endif; ?>
-
-        <form method="post" action="take_exam.php">
-            <label for="exam_id">Enter Exam ID:</label><br>
-            <input type="text" class="examid" id="exam_id" name="exam_id" required>
-            <button type="submit">Start Exam</button>
-        </form>
+        <a href="enter_exam_id.php" class="button">Start Exam</a>
     </div>
 </div>
 

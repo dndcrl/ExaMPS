@@ -8,13 +8,17 @@ $user_id = $_SESSION['user_id'];
 
 include 'db.php';
 
+// Get the list of users who have taken the exam
+$exam_id = $_GET['exam_id']; // Assuming exam_id is passed in the URL
 
-$sql = "SELECT exam_submissions.name, exam_submissions.submission_time, exams.exam_name 
+$sql = "SELECT exam_submissions.id AS submission_id, exam_submissions.name, exam_submissions.submission_time, exams.exam_name 
         FROM exam_submissions 
-        JOIN exams ON exam_submissions.exam_id = exams.id";
-$result = $conn->query($sql);
-
-
+        JOIN exams ON exam_submissions.exam_id = exams.id
+        WHERE exams.id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $exam_id);
+$stmt->execute();
+$result = $stmt->get_result();
 ?>
 
 <!DOCTYPE html>
@@ -26,43 +30,95 @@ $result = $conn->query($sql);
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
-            background-color: #f4f4f4;
+            background-color: #f9f9f9;
             margin: 0;
             padding: 20px;
         }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin: 20px 0;
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
+
         th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
+            padding: 12px 15px;
             text-align: left;
         }
+
         th {
             background-color: #28a745;
-            color: white;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        tr {
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:last-child {
+            border-bottom: none;
+        }
+
+        td {
+            color: #555;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #e9ffe9;
+        }
+
+        a {
+            color: #28a745;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
     <h1>Exam Results</h1>
-    <?php
-    if ($result->num_rows > 0) {
-        echo "<table>";
-        echo "<tr><th>Name</th><th>Exam Name</th><th>Submission Time</th></tr>";
-        while ($row = $result->fetch_assoc()) {
-            echo "<tr><td>" . htmlspecialchars($row['name']) . "</td><td>" . htmlspecialchars($row['exam_name']) . "</td><td>" . htmlspecialchars($row['submission_time']) . "</td></tr>";
-        }
-        echo "</table>";
-    } else {
-        echo "<p>No submissions found.</p>";
-    }
-    ?>
+    
+    <?php if ($result->num_rows > 0): ?>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Exam Name</th>
+                    <th>Submission Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php while ($row = $result->fetch_assoc()): ?>
+                    <tr>
+                        <td><a href='view_score.php?submission_id=<?php echo $row['submission_id']; ?>'><?php echo htmlspecialchars($row['name']); ?></a></td>
+                        <td><?php echo htmlspecialchars($row['exam_name']); ?></td>
+                        <td><?php echo htmlspecialchars($row['submission_time']); ?></td>
+                    </tr>
+                <?php endwhile; ?>
+            </tbody>
+        </table>
+    <?php else: ?>
+        <p style="text-align: center; color: #999;">No submissions found.</p>
+    <?php endif; ?>
+
+    <?php $stmt->close(); ?>
+    <?php $conn->close(); ?>
 </body>
 </html>
-
-<?php
-$conn->close();
-?>

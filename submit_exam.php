@@ -1,7 +1,5 @@
 <?php
-
 include 'db.php';
-
 
 $exam_id = isset($_POST['exam_id']) ? intval($_POST['exam_id']) : 0;
 $name = isset($_POST['name']) ? $_POST['name'] : '';
@@ -10,9 +8,35 @@ if (empty($name)) {
     die("No name provided.");
 }
 
+// Initialize the score
+$score = 0;
 
-$stmt = $conn->prepare("INSERT INTO exam_submissions (exam_id, name) VALUES (?, ?)");
-$stmt->bind_param("is", $exam_id, $name);
+// Check if the user submitted answers to questions
+if (isset($_POST['questions']) && is_array($_POST['questions'])) {
+    foreach ($_POST['questions'] as $question_id => $answer_data) {
+        // Get the selected choice ID from the user's response
+        $selected_choice_id = isset($answer_data['choice']) ? intval($answer_data['choice']) : 0;
+
+        // Check if the selected choice is correct
+        if ($selected_choice_id > 0) {
+            $stmt = $conn->prepare("SELECT is_correct FROM choices WHERE id = ?");
+            $stmt->bind_param("i", $selected_choice_id);
+            $stmt->execute();
+            $stmt->bind_result($is_correct);
+            $stmt->fetch();
+            $stmt->close();
+
+            // Increment the score if the selected choice is correct
+            if ($is_correct) {
+                $score++;
+            }
+        }
+    }
+}
+
+// Insert the exam submission with the score into the database
+$stmt = $conn->prepare("INSERT INTO exam_submissions (exam_id, name, score) VALUES (?, ?, ?)");
+$stmt->bind_param("isi", $exam_id, $name, $score);
 $stmt->execute();
 $stmt->close();
 
@@ -21,8 +45,6 @@ if (!isset($_SESSION['user_id'])) {
     die("User not logged in.");
 }
 $user_id = $_SESSION['user_id'];
-
-
 
 ?>
 
@@ -43,7 +65,6 @@ $user_id = $_SESSION['user_id'];
             align-items: center;
         }
 
-
         h1 {
             color: black;
             text-align: center;
@@ -58,13 +79,10 @@ $user_id = $_SESSION['user_id'];
 <body>
     
         <?php
-        $exam_id = isset($_POST['exam_id']) ? intval($_POST['exam_id']) : 0;
-        $questions = isset($_POST['questions']) ? $_POST['questions'] : [];
-
         if ($exam_id > 0) {
-            
             echo "<h1>Exam Submitted</h1>";
             echo "<p>Thank you for taking the exam!</p>";
+            echo "<p>Your score: $score</p>"; // Display the score to the user
         } else {
             echo "<h1>Invalid Exam ID</h1>";
             echo "<p>The exam ID provided is invalid. Please try again.</p>";

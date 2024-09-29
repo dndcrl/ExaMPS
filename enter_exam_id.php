@@ -57,10 +57,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             align-items: center;
             height: 100vh;
             color: #333;
+            position: relative;
         }
 
         .container {
-            background-color: #fff;
+            background-color: #ddd;
             padding: 2rem;
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
@@ -114,9 +115,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         .input-group {
             margin-bottom: 1.5rem;
         }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 0.6rem 1.5rem;
+            background-color: #ccc;
+            color: #333;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background-color: #bbb;
+        }
     </style>
 </head>
 <body>
+    <!-- Back Button Positioned in Upper Left -->
+    <a href="homepage.php" class="back-btn">Back to Homepage</a>
+
     <div class="container">
         <h1>Enter Exam ID</h1>
         <?php
@@ -127,10 +149,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         ?>
 
         <form method="GET" action="take_exam.php">
-    <input type="text" name="name" placeholder="Enter your name" required>
-    <input type="text" name="exam_id" placeholder="Enter exam ID" required>
-    <button type="submit">Start Exam</button>
-
+            <input type="text" name="name" placeholder="Enter your full name" required>
+            <input type="text" name="exam_id" placeholder="Enter exam ID" required>
+            <button type="submit">Start Exam</button>
         </form>
 
     </div>
