@@ -53,7 +53,6 @@
             text-decoration: underline;
         }
 
-        /* Main content styling */
         .content {
             max-width: 1200px;
             margin: 20px auto;
@@ -201,6 +200,71 @@
             color: lightgreen;
         }
 
+        @media (max-width: 768px) {
+
+            header {
+            background-color: #28a745;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 89%;
+            top: 0; 
+            z-index: 1000;
+        }
+           header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+           nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+         
+        }
+
+           nav ul li {
+            margin-left: 10px;
+        }
+
+           nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        h2 {
+            color: #28a745;
+            font-size: 30px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .section p {
+            font-size: 15px;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .our-story h2 {
+            color: #28a745;
+            font-size: 30px;
+            margin-bottom: 20px;
+        }
+
+        .our-story p {
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        }
+
         
 
         
@@ -215,7 +279,7 @@
         <ul>
             <li><a href="homepage.php">Home</a></li>
             <li><a href="aboutus.php">About Us</a></li>
-            <li><a href="contact.php">Contact</a></li>
+            <li><a href="under_construction.php">Contact</a></li>
         </ul>
     </nav>
 </header>

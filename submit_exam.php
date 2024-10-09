@@ -1,5 +1,5 @@
 <?php
-include 'db.php';
+include 'db.php'; // Database connection
 
 $exam_id = isset($_POST['exam_id']) ? intval($_POST['exam_id']) : 0;
 $name = isset($_POST['name']) ? $_POST['name'] : '';
@@ -10,6 +10,14 @@ if (empty($name)) {
 
 // Initialize the score
 $score = 0;
+
+// Retrieve the total number of questions for the exam
+$stmt = $conn->prepare("SELECT COUNT(*) AS total_questions FROM questions WHERE exam_id = ?");
+$stmt->bind_param("i", $exam_id);
+$stmt->execute();
+$stmt->bind_result($total_questions);
+$stmt->fetch();
+$stmt->close();
 
 // Check if the user submitted answers to questions
 if (isset($_POST['questions']) && is_array($_POST['questions'])) {
@@ -39,12 +47,6 @@ $stmt = $conn->prepare("INSERT INTO exam_submissions (exam_id, name, score) VALU
 $stmt->bind_param("isi", $exam_id, $name, $score);
 $stmt->execute();
 $stmt->close();
-
-session_start();
-if (!isset($_SESSION['user_id'])) {
-    die("User not logged in.");
-}
-$user_id = $_SESSION['user_id'];
 
 ?>
 
@@ -78,16 +80,16 @@ $user_id = $_SESSION['user_id'];
 </head>
 <body>
     
-        <?php
-        if ($exam_id > 0) {
-            echo "<h1>Exam Submitted</h1>";
-            echo "<p>Thank you for taking the exam!</p>";
-            echo "<p>Your score: $score</p>"; // Display the score to the user
-        } else {
-            echo "<h1>Invalid Exam ID</h1>";
-            echo "<p>The exam ID provided is invalid. Please try again.</p>";
-        }
-        ?>
+    <?php
+    if ($exam_id > 0) {
+        echo "<h1>Exam Submitted</h1>";
+        echo "<p>Thank you for taking the exam, $name!</p>";
+        echo "<p>Your score: $score out of $total_questions</p>"; // Display the score and total items
+    } else {
+        echo "<h1>Invalid Exam ID</h1>";
+        echo "<p>The exam ID provided is invalid. Please try again.</p>";
+    }
+    ?>
    
 </body>
 </html>

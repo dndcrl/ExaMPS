@@ -105,6 +105,44 @@
             text-decoration: none;
             color: lightgreen;
         }
+
+        @media (max-width: 768px) {
+            header {
+            background-color: #28a745;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 89%;
+            top: 0; 
+            z-index: 1000;
+        }
+           header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+           nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+         
+        }
+
+           nav ul li {
+            margin-left: 10px;
+        }
+
+           nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 12px;
+        }
+    }
     </style>
 </head>
 <body>
@@ -116,7 +154,7 @@
             <ul>
                 <li><a href="index.php">Home</a></li>
                 <li><a href="aboutus.php">About Us</a></li>
-                <li><a href="contact.php">Contact</a></li>
+                <li><a href="under_construction.php">Contact</a></li>
             </ul>
         </nav>
     </header>
@@ -126,7 +164,19 @@
         <h1>Changelogs</h1>
 
         <div class="changelog-entry">
-            <h2>ExaMPS Beta 1.0 - September 9, 2024</h2>
+            <h2>ExaMPS Beta 1.0.0  - September 29, 2024</h2>
+            <p><b>Posted by: carlette</b></p>
+            <br>
+            <p> 
+                - Live temporary online website for ExaMPS for testing. <b><i>(examps.rf.gd)</i></b><br>
+                - Improved the mobile view to enhance accessibility on mobile devices.<br>
+                - Added admins and admin panel to manage the website.
+                
+            </p>
+        </div>
+
+        <div class="changelog-entry">
+            <h2>ExaMPS - September 9, 2024</h2>
             <p><b>Posted by: carlette</b></p>
             <br>
             <p>

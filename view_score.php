@@ -12,7 +12,7 @@ if (isset($_GET['submission_id'])) {
     $submission_id = $_GET['submission_id'];
 
     // Query to retrieve the score based on submission_id
-    $sql = "SELECT exam_submissions.name, exam_submissions.score, exams.exam_name 
+    $sql = "SELECT exam_submissions.name, exam_submissions.score, exams.exam_name, exam_submissions.exam_id 
             FROM exam_submissions 
             JOIN exams ON exam_submissions.exam_id = exams.id 
             WHERE exam_submissions.id = ?";
@@ -23,6 +23,15 @@ if (isset($_GET['submission_id'])) {
 
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
+        $exam_id = $row['exam_id'];
+
+        // Query to get the total number of questions for this exam
+        $stmt = $conn->prepare("SELECT COUNT(*) AS total_questions FROM questions WHERE exam_id = ?");
+        $stmt->bind_param("i", $exam_id);
+        $stmt->execute();
+        $stmt->bind_result($total_questions);
+        $stmt->fetch();
+        $stmt->close();
     } else {
         echo "No score found.";
         exit();
@@ -100,7 +109,8 @@ if (isset($_GET['submission_id'])) {
             <p>Exam Name: <?php echo htmlspecialchars($row['exam_name']); ?></p>
             <p>Total Score:</p>
             <br>
-            <p class="score"><?php echo $row['score']; ?></p>
+            <!-- Display the score along with total questions -->
+            <p class="score"><?php echo $row['score']; ?> / <?php echo $total_questions; ?></p>
         </div>
     </div>
 </body>
