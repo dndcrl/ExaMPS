@@ -1,3 +1,4 @@
+
 <?php
 session_start();
 if (!isset($_SESSION['user_id'])) {
@@ -135,8 +136,9 @@ $result = $stmt->get_result();
 
   
         <div class="view-mps">
-            <a href="view_mps.php?exam_id=<?php echo $exam_id; ?>">View MPS</a>
+         <a href="view_mps.php?exam_id=<?php echo $exam_id; ?>">View MPS</a>
         </div>
+
 
     <?php else: ?>
         <p style="text-align: center; color: #999;">No submissions found.</p>

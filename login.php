@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'db.php'; // Make sure to include your database connection
+include 'db.php'; // Include your database connection
 
 // Check if the form has been submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -26,10 +26,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->fetch();
         $stmt->close();
 
-        // Check if the stored password matches the entered password and the account is approved
-        if ($password === $stored_password && $approved) {
+        // Check if the account is approved first
+        if (!$approved) {
+            $error_message = "Your account is not approved.";
+        } else if ($password === $stored_password) { // Compare passwords
+            // Set session variables
             $_SESSION['user_id'] = $user_id;
-            $_SESSION['is_admin'] = $is_admin; // Store admin status in session
+            $_SESSION['username'] = $username; // Optional: Store username
+            $_SESSION['is_teacher'] = $is_teacher; // Store teacher status
+            $_SESSION['is_admin'] = $is_admin; // Store admin status
 
             // Redirect to appropriate page
             if ($is_admin) {
@@ -39,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
             exit();
         } else {
-            $error_message = "Invalid username, password, or account not approved.";
+            $error_message = "Invalid username or password.";
         }
     } else {
         $error_message = "Please fill out all fields.";
@@ -138,7 +143,7 @@ $conn->close();
     <div class="container">
         <h1>Login</h1>
         <?php
-        // Display error message if set
+       
         if (isset($error_message)) {
             echo "<p class='error-message'>$error_message</p>";
         }
