@@ -8,8 +8,7 @@ $user_id = $_SESSION['user_id'];
 
 include 'db.php';
 
-// Get the list of users who have taken the exam
-$exam_id = $_GET['exam_id']; // Assuming exam_id is passed in the URL
+$exam_id = $_GET['exam_id']; 
 
 $sql = "SELECT exam_submissions.id AS submission_id, exam_submissions.name, exam_submissions.submission_time, exams.exam_name 
         FROM exam_submissions 
@@ -90,6 +89,25 @@ $result = $stmt->get_result();
         a:hover {
             text-decoration: underline;
         }
+
+        .view-mps {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .view-mps a {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .view-mps a:hover {
+            background-color: #218838;
+        }
+
     </style>
 </head>
 <body>
@@ -114,6 +132,12 @@ $result = $stmt->get_result();
                 <?php endwhile; ?>
             </tbody>
         </table>
+
+  
+        <div class="view-mps">
+            <a href="view_mps.php?exam_id=<?php echo $exam_id; ?>">View MPS</a>
+        </div>
+
     <?php else: ?>
         <p style="text-align: center; color: #999;">No submissions found.</p>
     <?php endif; ?>
