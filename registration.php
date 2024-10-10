@@ -1,27 +1,27 @@
 <?php
 include 'db.php';
 
-// Initialize message variable
+
 $message = "";
 
-// Registration process
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
-    $email = $_POST['email']; // Retrieve email from the form
-    $password = $_POST['password']; // Plain text password
+    $email = $_POST['email']; 
+    $password = $_POST['password']; 
     $is_teacher = isset($_POST['is_teacher']) ? 1 : 0;
 
-    // Check if the username already exists
+   
     $stmt = $conn->prepare("SELECT id FROM users WHERE username = ?");
     $stmt->bind_param("s", $username);
     $stmt->execute();
     $stmt->store_result();
 
     if ($stmt->num_rows > 0) {
-        // Username already exists
+    
         $message = "<p class='error-message'>Username already used.</p>";
     } else {
-        // Prepare the SQL statement to avoid SQL injection
+   
         $stmt = $conn->prepare("INSERT INTO users (username, email, password, is_teacher, approved) VALUES (?, ?, ?, ?, 0)");
         $stmt->bind_param("sssi", $username, $email, $password, $is_teacher);
 
@@ -135,7 +135,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h1>Register</h1>
         <p><b>Note:</b> Only authorized users can register an ExaMPS Account.</p>
         <?php
-        // Display message if set
+     
         if ($message != "") {
             echo $message;
         }
