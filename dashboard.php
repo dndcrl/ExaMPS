@@ -174,7 +174,7 @@ h1, h2 {
                 <?php while ($row = $exams_result->fetch_assoc()): ?>
                     <li>
                         <div>
-                            <a href="manage_exam.php?exam_id=<?php echo urlencode($row['id']); ?>"><?php echo htmlspecialchars($row['exam_name']); ?></a>
+                        <a href="manage_exam.php?exam_id=<?php echo urlencode($row['id']); ?>"><?php echo htmlspecialchars($row['exam_name']); ?></a>
                         </div>
                         <div class="actions">
                             <form method="post" action="" onsubmit="return confirm('Are you sure you want to delete this exam? This cannot be undone.');">

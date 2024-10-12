@@ -39,7 +39,6 @@ if (isset($_GET['exam_id'])) {
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -137,16 +136,16 @@ if (isset($_GET['exam_id'])) {
         <h1>Exam: <?php echo htmlspecialchars($exam_name); ?></h1>
         
         <form method="post" action="submit_exam.php">
-        <input type="hidden" name="exam_id" value="<?php echo $exam_id; ?>">
-        <input type="hidden" name="name" value="<?php echo htmlspecialchars($_GET['name']); ?>"> <!-- Ensure name is passed -->
+            <input type="hidden" name="exam_id" value="<?php echo $exam_id; ?>">
+            <input type="hidden" name="name" value="<?php echo htmlspecialchars($_GET['name']); ?>"> <!-- Ensure name is passed -->
 
-            <?php foreach ($questions_data as $index => $question): ?>
+            <?php foreach ($questions_data as $question): ?>
                 <div class="question-container">
-                    <p><?php echo 'Question ' . ($index + 1) . ': ' . htmlspecialchars($question['question_text']); ?></p>
+                    <p><?php echo 'Question: ' . htmlspecialchars($question['question_text']); ?></p>
                     <?php foreach ($question['choices'] as $key => $choice): ?>
                         <div class="choice-container">
-                            <input type="radio" id="choice_<?php echo $index; ?>_<?php echo $key; ?>" name="questions[<?php echo $index; ?>][choice]" value="<?php echo $choice['id']; ?>">
-                            <label for="choice_<?php echo $index; ?>_<?php echo $key; ?>" class="choice-label"><?php echo chr(65 + $key) . ': ' . htmlspecialchars($choice['choice_text']); ?></label>
+                            <input type="radio" id="choice_<?php echo $question['id']; ?>_<?php echo $key; ?>" name="questions[<?php echo $question['id']; ?>][choice]" value="<?php echo $choice['id']; ?>">
+                            <label for="choice_<?php echo $question['id']; ?>_<?php echo $key; ?>" class="choice-label"><?php echo chr(65 + $key) . ': ' . htmlspecialchars($choice['choice_text']); ?></label>
                         </div>
                     <?php endforeach; ?>
                 </div>

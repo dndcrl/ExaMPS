@@ -8,7 +8,6 @@ $user_id = $_SESSION['user_id'];
 
 include 'db.php';
 
-
 $exam_name = '';
 $exam_id = '';
 $success_message = '';
@@ -28,11 +27,16 @@ function generateUniqueExamId($conn) {
     return $exam_id;
 }
 
-
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $exam_name = $_POST['exam_name'];
     $exam_id = isset($_POST['exam_id']) ? $_POST['exam_id'] : '';
+
+
+    // Check if the exam name is empty
+    if (empty($exam_name)) {
+        die('Exam name cannot be empty.'); // Debug line
+    }
 
     // Retrieve user ID from session
     $user_id = $_SESSION['user_id'];
@@ -61,59 +65,77 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
         $success_message = "Exam updated successfully! Exam ID: " . htmlspecialchars($exam_id);
     }
-    
 
-    // Handle questions
-    $questions = isset($_POST['questions']) ? $_POST['questions'] : [];
 
-    foreach ($questions as $question) {
-        $question_id = isset($question['id']) ? intval($question['id']) : 0;
-        $question_text = $question['question_text'];
 
-        if ($question_id == 0) {
-            // Insert new question
-            $stmt = $conn->prepare("INSERT INTO questions (question_text, exam_id) VALUES (?, ?)");
-            $stmt->bind_param("ss", $question_text, $exam_id);
+    // questions handler
+$questions = isset($_POST['questions']) ? $_POST['questions'] : [];
+
+$max_question_sql = "SELECT COALESCE(MAX(question_number), 0) AS max_question_number FROM questions WHERE exam_id = ?";
+$max_question_stmt = $conn->prepare($max_question_sql);
+$max_question_stmt->bind_param("s", $exam_id);
+$max_question_stmt->execute();
+$max_question_stmt->bind_result($max_question_number);
+$max_question_stmt->fetch();
+$max_question_stmt->close();
+
+$next_question_number = $max_question_number + 1;
+
+foreach ($questions as $question) {
+    $question_id = isset($question['id']) ? intval($question['id']) : 0;
+    $question_text = $question['question_text'];
+
+    if ($question_id == 0) {
+       
+        $stmt = $conn->prepare("INSERT INTO questions (question_text, exam_id, question_number) VALUES (?, ?, ?)");
+        $stmt->bind_param("ssi", $question_text, $exam_id, $next_question_number);
+        if (!$stmt->execute()) {
+            die('Insert failed: ' . htmlspecialchars($stmt->error));
+        }
+        $question_id = $stmt->insert_id; 
+        $stmt->close();
+
+       
+        $next_question_number++;
+    } else {
+      
+        $stmt = $conn->prepare("UPDATE questions SET question_text = ? WHERE id = ?");
+        $stmt->bind_param("si", $question_text, $question_id);
+        if (!$stmt->execute()) {
+            die('Update failed: ' . htmlspecialchars($stmt->error));
+        }
+        $stmt->close();
+    }
+
+    // choices handler
+    $choices = $question['choices'] ?? [];
+    foreach ($choices as $key => $choice) {
+        $choice_id = isset($choice['id']) ? intval($choice['id']) : 0;
+        $choice_text = $choice['choice_text'];
+        $is_correct = isset($choice['is_correct']) ? 1 : 0;
+
+        if ($choice_id == 0) {
+
+            $stmt = $conn->prepare("INSERT INTO choices (question_id, choice_text, is_correct) VALUES (?, ?, ?)");
+            $stmt->bind_param("isi", $question_id, $choice_text, $is_correct);
             $stmt->execute();
-            $question_id = $stmt->insert_id;
             $stmt->close();
         } else {
-            // Update existing question
-            $stmt = $conn->prepare("UPDATE questions SET question_text = ? WHERE id = ?");
-            $stmt->bind_param("si", $question_text, $question_id);
+
+            $stmt = $conn->prepare("UPDATE choices SET choice_text = ?, is_correct = ? WHERE id = ?");
+            $stmt->bind_param("sii", $choice_text, $is_correct, $choice_id);
             $stmt->execute();
             $stmt->close();
-        }
-
-        // handle the choices
-        $choices = $question['choices'] ?? [];
-        foreach ($choices as $key => $choice) {
-            $choice_id = isset($choice['id']) ? intval($choice['id']) : 0;
-            $choice_text = $choice['choice_text'];
-            $is_correct = isset($choice['is_correct']) ? 1 : 0;
-
-            if ($choice_id == 0) {
-                // insert new choice
-                $stmt = $conn->prepare("INSERT INTO choices (question_id, choice_text, is_correct) VALUES (?, ?, ?)");
-                $stmt->bind_param("isi", $question_id, $choice_text, $is_correct);
-                $stmt->execute();
-                $choice_id = $stmt->insert_id;
-                $stmt->close();
-            } else {
-                // update existing choice
-                $stmt = $conn->prepare("UPDATE choices SET choice_text = ?, is_correct = ? WHERE id = ?");
-                $stmt->bind_param("sii", $choice_text, $is_correct, $choice_id);
-                $stmt->execute();
-                $stmt->close();
-            }
         }
     }
 }
 
-// editing handle
+}
+
+// editing handler
 if (isset($_GET['exam_id'])) {
     $exam_id = $_GET['exam_id'];
-    $stmt = $conn->prepare("SELECT exam_name FROM exams WHERE id = ?");
+    $stmt = $conn->prepare("SELECT exam_name FROM exams WHERE exam_id = ?");
     $stmt->bind_param("s", $exam_id);
     $stmt->execute();
     $stmt->bind_result($exam_name);
@@ -136,12 +158,13 @@ if (isset($_GET['exam_id'])) {
     $questions_data = [];
 }
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
     <title>Create & Manage Exam</title>
     <style>
-body {
+     body {
     font-family: Arial, sans-serif;
     background-color: #28a745;
     margin: 0;
@@ -254,8 +277,7 @@ input[type="text"][disabled] {
 .back-button:hover {
     background-color: #5a6268;
 }
-
-    </style>
+</style>
 </head>
 <body>
     <div class="container">
@@ -274,94 +296,85 @@ input[type="text"][disabled] {
         <a href="dashboard.php" class="back-button">Go Back to Dashboard</a>
 
         <form method="post" action="">
-    <label for="exam_name">Exam Name:</label>
-    <input type="text" id="exam_name" name="exam_name" value="<?php echo htmlspecialchars($exam_name); ?>" required>
+            <label for="exam_name">Exam Name:</label>
+            <input type="text" id="exam_name" name="exam_name" value="<?php echo htmlspecialchars($exam_name); ?>" required>
 
-    <label for="exam_id_display">Exam ID:</label>
-    <input type="text" id="exam_id_display" value="<?php echo htmlspecialchars($exam_id); ?>" disabled>
-    <input type="hidden" id="exam_id" name="exam_id" value="<?php echo htmlspecialchars($exam_id); ?>">
+            <label for="exam_id_display">Exam ID:</label>
+            <input type="text" id="exam_id_display" value="<?php echo htmlspecialchars($exam_id); ?>" disabled>
+            <input type="hidden" id="exam_id" name="exam_id" value="<?php echo htmlspecialchars($exam_id); ?>">
 
-    <div id="questions-container">
-        <?php foreach ($questions_data as $index => $question): ?>
-            <div class="question-container" data-index="<?php echo $index; ?>">
-                <label for="question_text_<?php echo $index; ?>">Question <?php echo $index + 1; ?>:</label>
-                <input type="text" id="question_text_<?php echo $index; ?>" name="questions[<?php echo $index; ?>][question_text]" value="<?php echo htmlspecialchars($question['question_text']); ?>" required>
-                <input type="hidden" name="questions[<?php echo $index; ?>][id]" value="<?php echo htmlspecialchars($question['id']); ?>">
+            <div id="questions-container">
+                <?php foreach ($questions_data as $index => $question): ?>
+                    <div class="question-container" data-index="<?php echo $index; ?>">
+                        <label for="question_text_<?php echo $index; ?>">Question <?php echo $index + 1; ?>:</label>
+                        <input type="text" id="question_text_<?php echo $index; ?>" name="questions[<?php echo $index; ?>][question_text]" value="<?php echo htmlspecialchars($question['question_text']); ?>" required>
+                        <input type="hidden" name="questions[<?php echo $index; ?>][id]" value="<?php echo htmlspecialchars($question['id']); ?>">
 
-                <div class="choices-container" id="choices-container_<?php echo $index; ?>">
-                    <?php foreach ($question['choices'] as $key => $choice): ?>
-                        <div class="choice-container">
-                            <span class="choice-label"><?php echo chr(65 + $key); ?>:</span> <!-- A, B, C, ... -->
-                            <input type="text" name="questions[<?php echo $index; ?>][choices][<?php echo $key; ?>][choice_text]" value="<?php echo htmlspecialchars($choice['choice_text']); ?>">
-                            <input type="checkbox" name="questions[<?php echo $index; ?>][choices][<?php echo $key; ?>][is_correct]" <?php echo $choice['is_correct'] ? 'checked' : ''; ?>> Correct
-                            <input type="hidden" name="questions[<?php echo $index; ?>][choices][<?php echo $key; ?>][id]" value="<?php echo htmlspecialchars($choice['id']); ?>">
-                            <button type="button" class="remove-choice-button" onclick="removeChoice(this)">Remove Choice</button>
+                        <div class="choices-container" id="choices-container_<?php echo $index; ?>">
+                            <?php foreach ($question['choices'] as $key => $choice): ?>
+                                <div class="choice-container">
+                                    <span class="choice-label"><?php echo chr(65 + $key); ?>:</span> <!-- A, B, C, ... -->
+                                    <input type="text" name="questions[<?php echo $index; ?>][choices][<?php echo $key; ?>][choice_text]" value="<?php echo htmlspecialchars($choice['choice_text']); ?>">
+                                    <input type="checkbox" name="questions[<?php echo $index; ?>][choices][<?php echo $key; ?>][is_correct]" <?php echo $choice['is_correct'] ? 'checked' : ''; ?>> Correct
+                                    <input type="hidden" name="questions[<?php echo $index; ?>][choices][<?php echo $key; ?>][id]" value="<?php echo htmlspecialchars($choice['id']); ?>">
+                                    <button type="button" class="remove-choice-button" onclick="removeChoice(this)">Remove Choice</button>
+                                </div>
+                            <?php endforeach; ?>
                         </div>
-                    <?php endforeach; ?>
-                </div>
-
-                <button type="button" class="add-choice-button" onclick="addChoice(<?php echo $index; ?>)">Add Choice</button>
-                <button type="button" class="remove-question-button" onclick="removeQuestion(this)">Remove Question</button>
+                        <button type="button" class="add-choice-button" onclick="addChoice(<?php echo $index; ?>)">Add Choice</button>
+                        <button type="button" class="remove-question-button" onclick="removeQuestion(this)">Remove Question</button>
+                    </div>
+                <?php endforeach; ?>
             </div>
-        <?php endforeach; ?>
-    </div>
-
-    <button type="button" class="add-question-button" onclick="addQuestion()">Add Question</button>
-    <button type="submit">Save Exam</button>
-</form>
-
+            <button type="button" id="add-question-button">Add Question</button>
+            <input type="submit" value="Save Exam">
+        </form>
     </div>
 
     <script>
-    function addQuestion() {
-        const container = document.getElementById('questions-container');
-        const index = container.children.length;
-        const questionHtml = `
-            <div class="question-container" data-index="${index}">
-                <label for="question_text_${index}">Question ${index + 1}:</label>
-                <input type="text" id="question_text_${index}" name="questions[${index}][question_text]" required>
-                <input type="hidden" name="questions[${index}][id]" value="">
-
-                <div class="choices-container" id="choices-container_${index}">
-                    <div class="choice-container">
-                        <span class="choice-label">A:</span>
-                        <input type="text" name="questions[${index}][choices][0][choice_text]">
-                        <input type="checkbox" name="questions[${index}][choices][0][is_correct]"> Correct
-                        <input type="hidden" name="questions[${index}][choices][0][id]" value="">
-                        <button type="button" class="remove-choice-button" onclick="removeChoice(this)">Remove Choice</button>
-                    </div>
+       
+        function addQuestion() {
+            var questionsContainer = document.getElementById('questions-container');
+            var questionCount = questionsContainer.children.length;
+            var newQuestionContainer = document.createElement('div');
+            newQuestionContainer.classList.add('question-container');
+            newQuestionContainer.setAttribute('data-index', questionCount);
+            newQuestionContainer.innerHTML = `
+                <label for="question_text_${questionCount}">Question ${questionCount + 1}:</label>
+                <input type="text" id="question_text_${questionCount}" name="questions[${questionCount}][question_text]" required>
+                <div class="choices-container" id="choices-container_${questionCount}">
                 </div>
-
-                <button type="button" class="add-choice-button" onclick="addChoice(${index})">Add Choice</button>
+                <button type="button" class="add-choice-button" onclick="addChoice(${questionCount})">Add Choice</button>
                 <button type="button" class="remove-question-button" onclick="removeQuestion(this)">Remove Question</button>
-            </div>
-        `;
-        container.insertAdjacentHTML('beforeend', questionHtml);
-    }
+            `;
+            questionsContainer.appendChild(newQuestionContainer);
+        }
 
-    function addChoice(questionIndex) {
-        const choicesContainer = document.getElementById(`choices-container_${questionIndex}`);
-        const choiceIndex = choicesContainer.children.length;
-        const choiceHtml = `
-            <div class="choice-container">
-                <span class="choice-label">${String.fromCharCode(65 + choiceIndex)}:</span>
-                <input type="text" name="questions[${questionIndex}][choices][${choiceIndex}][choice_text]">
-                <input type="checkbox" name="questions[${questionIndex}][choices][${choiceIndex}][is_correct]"> Correct
-                <input type="hidden" name="questions[${questionIndex}][choices][${choiceIndex}][id]" value="">
+        function removeQuestion(button) {
+            var questionContainer = button.parentElement;
+            questionContainer.remove();
+        }
+
+        function addChoice(questionIndex) {
+            var choicesContainer = document.getElementById(`choices-container_${questionIndex}`);
+            var choiceCount = choicesContainer.children.length;
+            var newChoiceContainer = document.createElement('div');
+            newChoiceContainer.classList.add('choice-container');
+            newChoiceContainer.innerHTML = `
+                <span class="choice-label">${String.fromCharCode(65 + choiceCount)}:</span> <!-- A, B, C, ... -->
+                <input type="text" name="questions[${questionIndex}][choices][${choiceCount}][choice_text]">
+                <input type="checkbox" name="questions[${questionIndex}][choices][${choiceCount}][is_correct]"> Correct
                 <button type="button" class="remove-choice-button" onclick="removeChoice(this)">Remove Choice</button>
-            </div>
-        `;
-        choicesContainer.insertAdjacentHTML('beforeend', choiceHtml);
-    }
+            `;
+            choicesContainer.appendChild(newChoiceContainer);
+        }
 
-    function removeChoice(button) {
-        button.parentElement.remove();
-    }
+        function removeChoice(button) {
+            var choiceContainer = button.parentElement;
+            choiceContainer.remove();
+        }
 
-    function removeQuestion(button) {
-        button.parentElement.remove();
-    }
+        document.getElementById('add-question-button').addEventListener('click', addQuestion);
     </script>
 </body>
 </html>
-
